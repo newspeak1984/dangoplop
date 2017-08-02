@@ -49,13 +49,38 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            anim.SetInteger("State", 0);
+            anim.SetInteger("State", 1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            anim.SetInteger("State", 3);
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            anim.SetInteger("State", 4);
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            anim.SetInteger("State", 5);
+        }
+
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            anim.SetInteger("State", 6);
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            anim.SetInteger("State", 1);
+            anim.SetInteger("State", 2);
         }
+
+
+
+
+
     }
 	void Fire(){
 
