@@ -29,6 +29,10 @@ public class Ball_Behavioiur : MonoBehaviour {
 	public float Ball1TranslateY;
 	public float Ball2TranslateY;
 	public bool GameStart = true;
+    public Vector2 position;
+    public double maxHeight;
+    public bool entered;
+
 
 
 
@@ -40,6 +44,10 @@ public class Ball_Behavioiur : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         circle = GetComponent<CircleCollider2D>();
         rb.AddForce(Vector2.right * thrust);
+        position = rb.transform.position;
+        entered = false;
+        
+        
 		
 	}
 
@@ -53,10 +61,21 @@ public class Ball_Behavioiur : MonoBehaviour {
 		if (GameStart == true) {
 			Ball.transform.localScale = largeballscale;
 			GameStart = false;
-		} 
+		}
+        position = rb.transform.position;
+        if (position.y <= maxHeight)
+        {
+            entered = true;
+        }
+        if (entered && position.y >= maxHeight)
+        {
+            rb.AddForce(Vector2.down * 9);
+            
+        }
 
 
-	}
+
+    }
 
     private void OnCollisionEnter2D(Collision2D coll)
     {
@@ -91,20 +110,24 @@ public class Ball_Behavioiur : MonoBehaviour {
 			if (type == SizeType.LargeBall) {
 				ball1Obj.transform.localScale = medballscale;
 				ball2Obj.transform.localScale = medballscale;
-				ball1.type = SizeType.MediumBall;
+                ball1.type = SizeType.MediumBall;
 				ball2.type = SizeType.MediumBall;
+                ball1.mediumHeight();
+                ball2.mediumHeight();
 
 
-			}
+            }
 
 			else if (type == SizeType.MediumBall) {
 				ball1Obj.transform.localScale = smallballscale;
-				ball2Obj.transform.localScale = smallballscale;
-				ball1.type = SizeType.SmallBall;
+                ball2Obj.transform.localScale = smallballscale;
+                ball1.type = SizeType.SmallBall;
 				ball2.type = SizeType.SmallBall;
+                ball1.smallHeight();
+                ball2.smallHeight();
 
 
-			}
+            }
 
 		}
 		if (Projectile == true) {
@@ -120,4 +143,18 @@ public class Ball_Behavioiur : MonoBehaviour {
 			HandleSplit ();
 		}
 	}
+
+    public void mediumHeight()
+    {
+        maxHeight = -1;
+    }
+    public void smallHeight()
+    {
+        maxHeight = -2;
+    }
+
+    public void speedChange(int newSpeed)
+    {
+        thrust = newSpeed;
+    }
 }

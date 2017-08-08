@@ -47,29 +47,11 @@ public class PlayerController : MonoBehaviour {
 
 		rb2d.velocity = new Vector2 (moveHorizontal, rb2d.velocity.y);
 
+        anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             anim.SetInteger("State", 1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            anim.SetInteger("State", 3);
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            anim.SetInteger("State", 4);
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            anim.SetInteger("State", 5);
-        }
-
-        if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            anim.SetInteger("State", 6);
         }
 
         if (Input.GetKey(KeyCode.RightArrow))
@@ -77,15 +59,19 @@ public class PlayerController : MonoBehaviour {
             anim.SetInteger("State", 2);
         }
 
-
-
-
-
+        if (Input.GetKey(KeyCode.Space))
+        {
+            anim.SetBool("Shot", true);
+            StartCoroutine(Wait());
+        }        
     }
+
+
 	void Fire(){
 
 		Instantiate (Projectile, ProjectilePos.position, Quaternion.identity);
 	}
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -94,6 +80,14 @@ public class PlayerController : MonoBehaviour {
            FindObjectOfType<GameOverMenu>().EndGame();
         }
     }
+
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(0.5f);
+        anim.SetBool("Shot", false);
+    }
+
 
 
 }
